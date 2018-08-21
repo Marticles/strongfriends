@@ -1,0 +1,38 @@
+<html>
+<body>
+<pre>
+    hhhhhhhhh
+
+    $!{value1}
+
+
+
+
+    #foreach($key in $map.keySet())
+        Color2 $!{foreach.index}/$!{foreach.count}:$!{key} $map.get($key)
+    #end
+
+    $!{user.name}
+    $!{user.getName()}
+
+    #set($title="strongfriends")
+    Include:#include("header.vm")
+    Parse:#parse("header.vm ")
+
+    #macro (render_color, $color, $index)
+        Color by Macro $index $color
+    #end
+
+    #foreach($color in $colors)
+        #render_color($color,$foreach.index)
+    #end
+
+    #set($hello ="hello")
+    #set($hello1 = "$!hello man")
+
+    hello1:$!hello1
+
+</pre>
+
+</body>
+</html>
