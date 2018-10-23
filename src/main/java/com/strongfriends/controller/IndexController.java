@@ -1,6 +1,5 @@
 package com.strongfriends.controller;
 
-import com.strongfriends.aspect.LogAspect;
 import com.strongfriends.model.User;
 import com.strongfriends.service.StrongfriendsService;
 import org.slf4j.Logger;
@@ -24,14 +23,14 @@ public class IndexController {
 
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-    @RequestMapping(path = {"/"})
+/*    @RequestMapping(path = {"/"})
     @ResponseBody
     public String index(HttpSession session) {
         logger.info("Visit index");
 
         return "Demo," + session.getAttribute("msg")+"<br>Say:"+strongfriends.say();
 
-    }
+    }*/
 
     @RequestMapping(value = {"/profile/{groupId}/{userId}"})
     @ResponseBody
