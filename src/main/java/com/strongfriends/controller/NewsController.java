@@ -1,8 +1,7 @@
 package com.strongfriends.controller;
 
-import com.strongfriends.model.HostHolder;
-import com.strongfriends.model.News;
-import com.strongfriends.model.ViewObject;
+import com.strongfriends.model.*;
+import com.strongfriends.service.CommentService;
 import com.strongfriends.service.NewsService;
 import com.strongfriends.service.UserService;
 import com.strongfriends.util.StrongFriendsUtil;
@@ -33,6 +32,9 @@ public class NewsController {
     UserService userService;
 
     @Autowired
+    CommentService commentService;
+
+    @Autowired
     HostHolder hostHolder;
 
     @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
@@ -40,15 +42,15 @@ public class NewsController {
         try {
             News news = newsService.getById(newsId);
             if (news != null) {
-//                List<Comment> comments = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_NEWS);
-//                List<ViewObject> commentVOs = new ArrayList<ViewObject>();
-//                for (Comment comment : comments) {
-//                    ViewObject commentVO = new ViewObject();
-//                    commentVO.set("comment", comment);
-//                    commentVO.set("user", userService.getUser(comment.getUserId()));
-//                    commentVOs.add(commentVO);
-//                }
-//                model.addAttribute("comments", commentVOs);
+                List<Comment> comments = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_POST);
+                List<ViewObject> commentVOs = new ArrayList<ViewObject>();
+                for (Comment comment : comments) {
+                    ViewObject commentVO = new ViewObject();
+                    commentVO.set("comment", comment);
+                    commentVO.set("user", userService.getUser(comment.getUserId()));
+                    commentVOs.add(commentVO);
+                }
+                model.addAttribute("comments", commentVOs);
             }
             model.addAttribute("news", news);
             model.addAttribute("owner", userService.getUser(news.getUserId()));
@@ -110,5 +112,28 @@ public class NewsController {
             logger.error("添加新帖失败" + e.getMessage());
             return StrongFriendsUtil.getJSONString(1, "发布失败");
         }
+    }
+
+    @RequestMapping(path = {"/addComment"}, method = {RequestMethod.POST})
+    public String addComment(@RequestParam("newsId") int newsId,
+                             @RequestParam("content") String content) {
+        try {
+            Comment comment = new Comment();
+            comment.setUserId(hostHolder.getUser().getId());
+            comment.setContent(content);
+            comment.setEntityType(EntityType.ENTITY_POST);
+            comment.setEntityId(newsId);
+            comment.setCreatedDate(new Date());
+            comment.setStatus(0);
+            commentService.addComment(comment);
+
+
+            int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
+            newsService.updateCommentCount(comment.getEntityId(), count);
+
+        } catch (Exception e) {
+            logger.error("提交评论错误" + e.getMessage());
+        }
+        return "redirect:/news/" + String.valueOf(newsId);
     }
 }

@@ -17,6 +17,7 @@
                           <h3 class="title">
                               <a target="_blank" rel="external nofollow" href="$!{news.link}">$!{news.title}</a>
                           </h3>
+
                           <div class="meta">
                               $!{news.link}
                               <span>
@@ -53,7 +54,7 @@
                 </form>
                 #else
                 <div class="login-actions">
-                    <a class="btn btn-success" href="/?pop=1">登录后评论</a>
+                    <a class="btn btn-success" href="/?pop=1">登录后才可评论</a>
                 </div>
                 #end
             </div>
@@ -61,7 +62,7 @@
             <div id="comments" class="comments">
                 #foreach($commentvo in $comments)
                 <div class="media">
-                    <a class="media-left" href="http://nowcoder.com/u/210176">
+                    <a class="media-left" href="$!{commentvo.user.id}">
                         <img src="$!{commentvo.user.headUrl}">
                     </a>
                     <div class="media-body">
@@ -75,5 +76,7 @@
         </div>
         
     </div>
+
+
 
 #parse("footer.html")
