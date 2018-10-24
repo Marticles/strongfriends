@@ -50,7 +50,7 @@ public class UserService {
         user.setPassword(StrongFriendsUtil.MD5(password+user.getSalt()));
         userDAO.addUser(user);
 
-        // 登陆
+
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);
         return map;
