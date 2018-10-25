@@ -23,7 +23,7 @@
                     '</div>',
                     '<div class="form-group">',
                         '<div class="col-input-login">',
-                            '<a class="btn btn-info js-login" href="javascript:void(0);">登录</a>',
+                            '<a class="btn btn-info js-login" href="javascript:void(0);">登陆</a>',
                             '<a class="btn btn-info js-register" href="javascript:void(0);">注册</a>',
                         '</div>',
                     '</div>',

@@ -1,8 +1,10 @@
 package com.strongfriends.controller;
 
+import com.strongfriends.model.EntityType;
 import com.strongfriends.model.HostHolder;
 import com.strongfriends.model.News;
 import com.strongfriends.model.ViewObject;
+import com.strongfriends.service.LikeService;
 import com.strongfriends.service.NewsService;
 import com.strongfriends.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +27,24 @@ public class HomeController {
     UserService userService;
 
     @Autowired
+    LikeService likeService;
+
+    @Autowired
     HostHolder hostHolder;
 
     private List<ViewObject> getNews(int userId, int offset, int limit) {
         List<News> newsList = newsService.getLatestNews(userId, offset, limit);
-
+        int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId() : 0;
         List<ViewObject> vos = new ArrayList<>();
         for (News news : newsList) {
             ViewObject vo = new ViewObject();
             vo.set("news", news);
             vo.set("user", userService.getUser(news.getUserId()));
+            if (localUserId != 0) {
+                vo.set("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_POST, news.getId()));
+            } else {
+                vo.set("like", 0);
+            }
             vos.add(vo);
         }
         return vos;

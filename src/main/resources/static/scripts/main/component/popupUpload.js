@@ -97,7 +97,7 @@ var oPopupUpload = new PopupUpload({
         var that = this;
         var oLogin = new PopupUpload(oConf);
         var oPopup = new Popup({
-            title: '发表新帖',
+            title: '分享',
             width: 700,
             content: oLogin.html()
         });

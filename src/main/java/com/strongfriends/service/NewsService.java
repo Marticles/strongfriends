@@ -19,8 +19,8 @@ public class NewsService {
     @Autowired
     private NewsDAO newsDAO;
 
-    public List<News> getLatestNews(int userId, int offset,int limit){
-        return newsDAO.selectByUserIdAndOffset(userId,offset,limit);
+    public List<News> getLatestNews(int userId, int offset, int limit) {
+        return newsDAO.selectByUserIdAndOffset(userId, offset, limit);
     }
 
     public int addNews(News news) {
@@ -31,7 +31,6 @@ public class NewsService {
     public News getById(int newsId) {
         return newsDAO.getById(newsId);
     }
-
 
 
     public String saveImage(MultipartFile file) throws IOException {
@@ -54,5 +53,7 @@ public class NewsService {
         return newsDAO.updateCommentCount(id, count);
     }
 
-
+    public int updateLikeCount(int id, int count) {
+        return newsDAO.updateLikeCount(id, count);
+    }
 }
