@@ -54,11 +54,15 @@ public class NewsController {
             // 评论
             List<Comment> comments = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_POST);
             List<ViewObject> commentVOs = new ArrayList<ViewObject>();
+            int i = comments.size();
             for (Comment comment : comments) {
-                ViewObject vo = new ViewObject();
+                                ViewObject vo = new ViewObject();
                 vo.set("comment", comment);
                 vo.set("user", userService.getUser(comment.getUserId()));
+                vo.set("floor",i);
+                vo.set("userName",userService.getUser(comment.getUserId()).getName());
                 commentVOs.add(vo);
+                i-=1;
             }
             model.addAttribute("comments", commentVOs);
         }
@@ -137,6 +141,8 @@ public class NewsController {
 
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
             newsService.updateCommentCount(comment.getEntityId(), count);
+
+
 
         } catch (Exception e) {
             logger.error("提交评论错误" + e.getMessage());

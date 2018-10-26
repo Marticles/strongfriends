@@ -42,13 +42,15 @@
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 
             <ul class="nav navbar-nav navbar-right">
-                <li class=""><a href="#">1RM计算</a></li>
-                <li class=""><a href="#">维京系数计算</a></li>
+                <li class=""><a href="#">RM计算</a></li>
+                <li class=""><a href="#">Wilks系数</a></li>
+                <li class=""><a href="#">力量排行榜</a></li>
+
 
                 #if ($user)
                 <li class="js-share"><a href="javascript:void(0);">发表新帖</a></li>
                 <li class=""><a href="/msg/list">私信</a></li>
-                <li class=""><a href="/user/$!{user.id}/">已在$!{user.name}登录</a></li>
+                <li class=""><a href="/user/$!{user.id}/">$!{user.name}</a></li>
                 <li class=""><a href="/logout/">注销</a></li>
                 #else
                 <li class="js-login"><a href="javascript:void(0);">登录 / 注册</a></li>

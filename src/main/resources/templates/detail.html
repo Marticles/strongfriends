@@ -73,7 +73,7 @@
                         <img src="$!{commentvo.user.headUrl}">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading"> <small class="date">$date.format('yyyy-MM-dd HH:mm:ss', $!{commentvo.comment.createdDate})</small></h4>
+                        <h4 class="media-heading"> <small class="date">$!{commentvo.userName} $!{commentvo.floor}楼 发表于$date.format('yyyy-MM-dd HH:mm:ss', $!{commentvo.comment.createdDate})</small></h4>
                         <div>$!{commentvo.comment.content}</div>
                     </div>
                 </div>

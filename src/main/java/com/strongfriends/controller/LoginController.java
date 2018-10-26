@@ -1,5 +1,8 @@
 package com.strongfriends.controller;
 
+import com.strongfriends.async.EventModel;
+import com.strongfriends.async.EventProducer;
+import com.strongfriends.async.EventType;
 import com.strongfriends.model.News;
 import com.strongfriends.model.ViewObject;
 import com.strongfriends.service.NewsService;
@@ -25,6 +28,9 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EventProducer eventProducer;
 
     @RequestMapping(path = {"/reg/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
@@ -67,14 +73,14 @@ public class LoginController {
                     cookie.setMaxAge(3600*24*5);
                 }
                 response.addCookie(cookie);
-                return StrongFriendsUtil.getJSONString(0, "注册成功");
+                                return StrongFriendsUtil.getJSONString(0, "登录成功");
             } else {
                 return StrongFriendsUtil.getJSONString(1, map);
             }
 
         } catch (Exception e) {
-            logger.error("注册异常" + e.getMessage());
-            return StrongFriendsUtil.getJSONString(1, "注册异常");
+            logger.error("登录异常" + e.getMessage());
+            return StrongFriendsUtil.getJSONString(1, "登录异常");
         }
     }
 

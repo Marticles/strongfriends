@@ -17,10 +17,6 @@ public class JedisAdapter implements InitializingBean {
     private static final Logger logger = LoggerFactory.getLogger(JedisAdapter.class);
 
 
-    public static void main(String[] args) {
-
-    }
-
     private Jedis jedis = null;
     private JedisPool pool = null;
 
@@ -125,7 +121,6 @@ public class JedisAdapter implements InitializingBean {
     }
 
     public void setex(String key, String value) {
-        // 验证码, 防机器注册，记录上次注册时间，有效期3天
         Jedis jedis = null;
         try {
             jedis = pool.getResource();
