@@ -4,8 +4,8 @@
 ![](img/index.png)
 ## About StrongFriends
 StrongFriends is a form which focus on the lifting. You can share information you are interested in by sending posts and communicate with others via comment or letter. We also provide RM(Repetition Maximum) and Wilks coefficient calculator.In the strength rankings you will see other user's training level.
-## Development environment
-- Jdk 1.8
+## Development Environment
+- JDK 1.8
 - Maven
 - Spring Boot
 - MyBatis
@@ -25,8 +25,8 @@ In order to take release the pressure of the servers, I maintain a blocking queu
 
 ### Async Module
 This async module is designed based on producer/consumer model, it is divided into the following five classes:
-1. EventModel (Event class)
-2. EventType (This class marks the type of events)
-3. EventHandler (A common class to handle events)
-4. EventProducer (Every sigle user's request will be pushed to the queue)
-5. EventConsumer (Consumer will generate a thread to consume the events in the queue with infinite loop.)
+- EventModel (Event class)
+- EventType (This class marks the type of events)
+- EventHandler (A common class to handle events)
+- EventProducer (Every sigle user's request will be pushed to the queue)
+- EventConsumer (Consumer will generate a thread to consume the events in the queue with infinite loop.)
