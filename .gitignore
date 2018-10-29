@@ -66,3 +66,6 @@ hs_err_pid*
 *.js linguist-language=java
 *.css linguist-language=java
 *.html linguist-language=java
+
+* linguist-vendored
+*.css linguist-vendored
