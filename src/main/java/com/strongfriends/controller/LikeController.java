@@ -34,7 +34,7 @@ public class LikeController {
     @ResponseBody
     public String like(@RequestParam("newsId") int newsId) {
         News news = newsService.getById(newsId);
-        if (hostHolder.getUser()==null){
+        if (hostHolder.getUser() == null) {
             return StrongFriendsUtil.getJSONString(1);
         }
         int userId = hostHolder.getUser().getId();
@@ -51,7 +51,7 @@ public class LikeController {
     @RequestMapping(path = {"/dislike"}, method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public String disLike(@RequestParam("newsId") int newsId) {
-        if (hostHolder.getUser()==null){
+        if (hostHolder.getUser() == null) {
             return StrongFriendsUtil.getJSONString(1);
         }
         int userId = hostHolder.getUser().getId();

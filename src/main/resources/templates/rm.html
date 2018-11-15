@@ -1,0 +1,34 @@
+#parse("header.html")
+
+<div id="main">
+    <div class="container">
+        <h3>1RM计算器</h3>
+        <div class="form-group">
+            <label for="exampleInputName">重量 (KG)</label>
+            <input type="text" class="form-control" id="input_weight" placeholder="">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputName2">次数</label>
+            <input type="text" class="form-control" id="input_reps" placeholder="">
+        </div>
+
+        <button type="button" class="btn btn-info">点此计算</button>
+        <p><span> </span> </p>
+        <p><span> </span> </p>
+
+        <p><span id = "Brzycki"> Brzycki公式：</span> </p>
+        <p><span id = "Epley"> Epley公式：</span> </p>
+        <p><span id = "Lander"> Lander公式：</span> </p>
+        <p><span id = "Lombardi"> Lombardi公式：</span> </p>
+        <p><span id = "Mayhewetal"> Mayhewetal公式：</span> </p>
+        <p><span id = "Oconneretal"> Oconneretal公式：</span> </p>
+        <p><span id = "Wathan"> Wathan公式：</span> </p>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/scripts/main/util/rm.js"></script>
+
+#parse("footer.html")

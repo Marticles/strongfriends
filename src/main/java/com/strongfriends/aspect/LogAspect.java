@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 public class LogAspect {
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
-    @Before("execution(* com.strongfriends.controller.*Controller.*(..))")
+    // @Before("execution(* com.strongfriends.controller.*Controller.*(..))")
+    @Before("execution(* com.strongfriends.controller.HomeController.*(..))")
     public void beforeMethod(JoinPoint joinPoint){
         StringBuilder sb = new StringBuilder();
         for (Object arg : joinPoint.getArgs()) {
@@ -22,7 +23,7 @@ public class LogAspect {
         logger.info("before method:"+sb.toString());
     }
 
-    @After("execution(* com.strongfriends.controller.IndexController.*(..))")
+    @After("execution(* com.strongfriends.controller.HomeController.*(..))")
     public void afterMethod(JoinPoint joinPoint){
         logger.info("after method:");
     }

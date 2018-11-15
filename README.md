@@ -3,9 +3,9 @@
 ![](https://img.shields.io/badge/language-Java-orange.svg)
 ![](img/index.png)
 ## About StrongFriends
-StrongFriends is a form which focus on the lifting. You can share information you are interested in by sending posts and communicate with others via comment or letter. We also provide RM(Repetition Maximum) and Wilks coefficient calculator.In the strength rankings you will see other user's training level.
+StrongFriends is a form which focus on the lifting. You can share information you are interested in by sending posts and communicate with others via comment or letter. We also provide RM(Repetition Maximum) and Wilks coefficient calculator. In the strength rankings you will see other user's training level.
 ## Development Environment
-- JDK 1.8
+- JDK1.8
 - Maven
 - Spring Boot
 - MyBatis
@@ -13,7 +13,7 @@ StrongFriends is a form which focus on the lifting. You can share information yo
 - MySQL
 - Redis
 
-## Introduction
+## Notes
 ### Register
 To improve user's safe level, I add random salt to the password and encrypt/decrypt the password with MD5.
 
@@ -24,7 +24,7 @@ I only use Interceptor in login. Once user have registered, service will generat
 In order to take release the pressure of the servers, I maintain a blocking queue by using Redis. Some user's requests like letter, comment, like/dislike will be handled in async way.
 
 ### Async Module
-This async module is designed based on producer/consumer model, it is divided into the following five classes:
+This async module is designed based on producer/consumer model, it can divided into the following five classes:
 - EventModel (Event class)
 - EventType (This class marks the type of events)
 - EventHandler (A common class to handle events)

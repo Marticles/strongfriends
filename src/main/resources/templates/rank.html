@@ -1,0 +1,47 @@
+#parse("header.html")
+<div id="main">
+    <div class="container">
+        <h3>力量排行榜 (单位:KG)</h3>
+
+
+        <table class="table table-bordered table-striped">
+            <thead >
+            <tr >
+                <th style="text-align:center;">排名</th>
+                <th style="text-align:center;">用户ID</th>
+                <th style="text-align:center;">用户名</th>
+                <th style="text-align:center;">性别</th>
+                <th style="text-align:center;">体重</th>
+                <th style="text-align:center;">深蹲</th>
+                <th style="text-align:center;">卧推</th>
+                <th style="text-align:center;">硬拉</th>
+                <th style="text-align:center;">总重量</th>
+                <th style="text-align:center;">维京系数</th>
+            </tr>
+            </thead>
+            <tbody style="text-align:center;">
+            #set($num=1)
+            #foreach($rank in $ranks)
+            <tr>
+                <td>${num}</td>
+                <td>$!{rank.id}</td>
+                <td>$!{rank.name}</td>
+                <td>$!{rank.gender}</td>
+                <td>$!{rank.weight}</td>
+                <td>$!{rank.squat}</td>
+                <td>$!{rank.bench}</td>
+                <td>$!{rank.deadlift}</td>
+                <td>$!{rank.total}</td>
+                <td>$!{rank.wilks}</td>
+            </tr>
+            #set($num=1+$num)
+            #end
+
+        </table>
+
+
+    </div>
+
+
+</div>
+#parse("footer.html")
