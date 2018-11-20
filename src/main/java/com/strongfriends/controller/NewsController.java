@@ -9,7 +9,6 @@ import com.strongfriends.service.CommentService;
 import com.strongfriends.service.LikeService;
 import com.strongfriends.service.NewsService;
 import com.strongfriends.service.UserService;
-import com.strongfriends.util.RedisCopyUtil;
 import com.strongfriends.util.StrongFriendsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

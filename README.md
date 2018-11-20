@@ -28,5 +28,5 @@ This async module is designed based on producer/consumer model, it can divided i
 - EventModel (Event class)
 - EventType (This class marks the type of events)
 - EventHandler (A common class to handle events)
-- EventProducer (Every sigle user's request will be pushed to the queue)
-- EventConsumer (Consumer will generate a thread to consume the events in the queue with infinite loop.)
+- EventProducer (Every single request will be pushed to the queue)
+- EventConsumer (Consumer will generate a thread pool to consume the events in the queue with infinite loop.)

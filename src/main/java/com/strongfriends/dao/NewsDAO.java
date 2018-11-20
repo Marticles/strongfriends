@@ -24,7 +24,10 @@ public interface NewsDAO {
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}"})
     News selectById(int id);
 
-    @Select({"select ", SELECT_FIELDS , " from ", TABLE_NAME, " where id=#{id}"})
+    @Select({"select * from ", TABLE_NAME})
+    List<News> getAllNews();
+
+    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}"})
     News getById(int id);
 
     @Update({"update ", TABLE_NAME, "set comment_count = #{commentCount} where id=#{id}"})
