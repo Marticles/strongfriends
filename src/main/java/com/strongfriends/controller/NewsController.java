@@ -81,46 +81,34 @@ public class NewsController {
                     commentVOs.add(vo);
                     sizeFromRedis -=1;
                 }
-            // TODO 如果不一致(先失效缓存 把数据库中数据写入缓存 再拿缓存)
+            // 如果不一致(读MySQL返回，再把Mysql数据写入Redis缓存)
 
             }else{
                 System.out.println("Redis与MYSQL不一致");
                 synchronized (this) {
-                    // 失效该帖的缓存
-                    commentService.delCommentFromRedis("COMMENT:1:" + String.valueOf(newsId));
-                    // 将数据库中数据写入缓存
+
+                    // 读MySQL数据
+                    for (Comment comment : commentsMySQL) {
+                        ViewObject vo = new ViewObject();
+                        vo.set("comment", comment);
+                        vo.set("floor",sizeFromMySQL);
+                        vo.set("user", userService.getUser(comment.getUserId()));
+                        vo.set("userName",userService.getUser(comment.getUserId()).getName());
+                        commentVOs.add(vo);
+                        sizeFromMySQL-=1;
+                    }
+
+                    // 将MySQL数据写入Redis缓存
                     for (Comment comment : commentsMySQL) {
                         commentService.addCommentToRedis(comment);
                     }
-                    // 再从缓存中拿
-                    HashSet newCommentsRedis = new HashSet(commentService.getCommentsByEntityFromRedis(newsId));
-                    int newSizeFromRedis = commentsMySQL.size();
-                    Iterator<Comment> newIt = commentsRedis.iterator();
-                    while (newIt.hasNext()) {
-                        Comment comment = JSON.parseObject(String.valueOf(it.next()), Comment.class);
-                        ViewObject vo = new ViewObject();
-                        vo.set("comment", comment);
-                        vo.set("floor", newSizeFromRedis);
-                        vo.set("user", userService.getUser(comment.getUserId()));
-                        vo.set("userName", userService.getUser(comment.getUserId()).getName());
-                        commentVOs.add(vo);
-                        sizeFromRedis -= 1;
-                    }
+
 
                 }
 
             }
 
-            // 直接从MySQL中取数据，已弃用
-//            for (Comment comment : commentsMySQL) {
-//                ViewObject vo = new ViewObject();
-//                vo.set("comment", comment);
-//                vo.set("floor",sizeFromMySQL);
-//                vo.set("user", userService.getUser(comment.getUserId()));
-//                vo.set("userName",userService.getUser(comment.getUserId()).getName());
-//                commentVOs.add(vo);
-//                sizeFromMySQL-=1;
-//            }
+
 
             model.addAttribute("comments", commentVOs);
         }
@@ -149,7 +137,6 @@ public class NewsController {
     public String uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             String fileUrl = newsService.saveImage(file);
-            //String fileUrl = qiniuService.saveImage(file);
             if (fileUrl == null) {
                 return StrongFriendsUtil.getJSONString(1, "上传图片失败");
             }

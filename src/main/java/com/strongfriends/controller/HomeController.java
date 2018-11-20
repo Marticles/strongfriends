@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,8 @@ public class HomeController {
     }
 
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String index(Model model) {
+    public String index(HttpServletRequest request, Model model) {
+        System.out.println("Session id:"+request.getSession().getId());
         model.addAttribute("vos", getNews(0, 0, 10));
         return "home";
     }

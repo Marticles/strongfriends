@@ -56,9 +56,9 @@ public class CommentHandler implements EventHandler {
 
         Comment comment = JSON.parseObject(model.getExt("msg"), Comment.class);
         int status = commentService.addComment(comment);
-        // 插入MySQL失败则不会更新Redis
+        // 插入MySQL失败则不会失效Redis
         if(status != 0){
-            commentService.addCommentToRedis(comment);
+            commentService.delCommentFromRedis("COMMENT:1:" + String.valueOf(comment.getId()));
         }
 
         int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());

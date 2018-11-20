@@ -25,12 +25,12 @@ public class RedisTimerCopyUtil {
     // 每30分钟同步一次
     @Scheduled(fixedRate = 1000 * 60 * 30)
     public void timer() {
-        List<News> newsList = new ArrayList<News>(newsDAO.getAllNews());
-        for (News news : newsList) {
-            int id = news.getId();
-            int count = (int) jedisAdapter.scard("LIKE:1:" + String.valueOf(id));
-            newsDAO.updateLikeCount(id, count);
-        }
+//        List<News> newsList = new ArrayList<News>(newsDAO.getAllNews());
+//        for (News news : newsList) {
+//            int id = news.getId();
+//            int count = (int) jedisAdapter.scard("LIKE:1:" + String.valueOf(id));
+//            newsDAO.updateLikeCount(id, count);
+//        }
 
 
     }
