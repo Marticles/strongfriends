@@ -1,5 +1,7 @@
 package com.strongfriends.async;
 
+import com.strongfriends.model.Comment;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +12,7 @@ public class EventModel {
     private int actorId;
     // 触发对象
     private int entityId;
+    // 触发对象类型
     private int entityType;
     // 触发对象拥有者
     private int entityOwnerId;

@@ -1,5 +1,9 @@
 package com.strongfriends.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.strongfriends.async.EventModel;
+import com.strongfriends.async.EventProducer;
+import com.strongfriends.async.EventType;
 import com.strongfriends.model.*;
 import com.strongfriends.service.*;
 import com.strongfriends.util.StrongFriendsUtil;
@@ -26,6 +30,9 @@ public class MessageController {
 
     @Autowired
     MessageService messageService;
+
+    @Autowired
+    EventProducer eventProducer;
 
     @RequestMapping(path = {"/msg/detail"}, method = {RequestMethod.GET})
     public String conversationDetail(Model model, @RequestParam("conversationId") String conversationId) {
@@ -89,7 +96,14 @@ public class MessageController {
         msg.setFromId(fromId);
         msg.setConversationId(fromId < toId ? String.format("%d_%d", fromId, toId) :
                 String.format("%d_%d", toId, fromId));
-        messageService.addMessage(msg);
+
+        // messageService.addMessage(msg);
+        String msgString = JSON.toJSONString(msg, true);
+        eventProducer.fireEvent(new EventModel(EventType.MESSAGE)
+                .setEntityOwnerId(toId)
+                .setActorId(fromId)
+                .setExt("msg",msgString));
+
         return StrongFriendsUtil.getJSONString(msg.getId());
     }
 }

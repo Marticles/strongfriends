@@ -10,6 +10,7 @@ public class LikeService {
     @Autowired
     JedisAdapter jedisAdapter;
 
+    // 判断用户是否点赞
     public int getLikeStatus(int userId, int entityType, int entityId) {
         String likeKey = RedisKeyUtil.getLikeKey(entityId, entityType);
         if(jedisAdapter.sismember(likeKey, String.valueOf(userId))) {
@@ -22,10 +23,13 @@ public class LikeService {
     public long like(int userId, int entityType, int entityId) {
         // 在喜欢集合里增加
         String likeKey = RedisKeyUtil.getLikeKey(entityId, entityType);
+
+        // add:LIKE:事件类型(int):对象ID(int)
         jedisAdapter.sadd(likeKey, String.valueOf(userId));
         // 从反对里删除
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityId, entityType);
         jedisAdapter.srem(disLikeKey, String.valueOf(userId));
+
         return jedisAdapter.scard(likeKey);
     }
 
@@ -37,5 +41,17 @@ public class LikeService {
         String likeKey = RedisKeyUtil.getLikeKey(entityId, entityType);
         jedisAdapter.srem(likeKey, String.valueOf(userId));
         return jedisAdapter.scard(likeKey);
+    }
+
+    public long getLikeNum(int entityId,int entityType){
+        String likeKey = RedisKeyUtil.getLikeKey(entityId, entityType);
+        return jedisAdapter.scard(likeKey);
+
+    }
+
+    public long getDisLikeNum(int entityId,int entityType){
+        String likeKey = RedisKeyUtil.getDisLikeKey(entityId, entityType);
+        return jedisAdapter.scard(likeKey);
+
     }
 }

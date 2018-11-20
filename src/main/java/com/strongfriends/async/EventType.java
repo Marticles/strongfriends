@@ -1,9 +1,10 @@
 package com.strongfriends.async;
 
 public enum EventType {
-    LIKE(0),
-    COMMENT(1),
-    MESSAGE(2);
+    COMMENT(0),
+    LIKE(1),
+    DISLIKE(2),
+    MESSAGE(3);
 
     private int value;
 

@@ -10,7 +10,10 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Tuple;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class JedisAdapter implements InitializingBean {
@@ -75,6 +78,25 @@ public class JedisAdapter implements InitializingBean {
         }
     }
 
+    public Set smembers(String key) {
+        HashSet set = new HashSet();
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.smembers(key);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+            set.add(e.getMessage());
+            return set;
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+
+
     public long srem(String key, String value) {
         Jedis jedis = null;
         try {
@@ -120,6 +142,21 @@ public class JedisAdapter implements InitializingBean {
         }
     }
 
+    public void sdel(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            jedis.del(key);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+
     public void setex(String key, String value) {
         Jedis jedis = null;
         try {
@@ -148,6 +185,7 @@ public class JedisAdapter implements InitializingBean {
             }
         }
     }
+
 
     public List<String> brpop(int timeout, String key) {
         Jedis jedis = null;

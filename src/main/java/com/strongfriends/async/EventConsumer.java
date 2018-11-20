@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class EventConsumer implements InitializingBean, ApplicationContextAware {
@@ -44,11 +47,11 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
             }
         }
 
-        // 启动线程去消费事件
-        Thread thread = new Thread(new Runnable() {
-            @Override
+        // 使用线程池消费
+        ThreadPool threadPool = new ThreadPool();
+
+        Runnable task = new Runnable() {
             public void run() {
-                // 从队列一直消费
                 while (true) {
                     String key = RedisKeyUtil.getEventQueueKey();
                     List<String> messages = jedisAdapter.brpop(0, key);
@@ -71,12 +74,32 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
                     }
                 }
             }
-        });
-        thread.start();
+        };
+        threadPool.getThreadPool().execute(task);
     }
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
+    private class ThreadPool {
+        private final int CORE_SIZE = 8;
+
+        private final int MAX_SIZE = 12;
+
+        private final long KEEP_ALIVE_TIME = 30;
+
+        private final int QUEUE_SIZE = 50000;
+
+        private ThreadPoolExecutor threadPool = new ThreadPoolExecutor(CORE_SIZE, MAX_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(QUEUE_SIZE), new ThreadPoolExecutor.AbortPolicy());
+
+        private ThreadPoolExecutor getThreadPool() {
+            return threadPool;
+        }
+    }
+
 }
+
+
