@@ -65,7 +65,7 @@ public class NewsController {
             int sizeFromRedis = commentsRedis.size();
 
             // 从MySQL中拿评论
-            List<Comment> commentsMySQL = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_POST);
+            List<Comment> commentsMySQL = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_COMMENT);
             int sizeFromMySQL = commentsMySQL.size();
             Iterator<Comment> it = commentsRedis.iterator();
 
@@ -162,9 +162,16 @@ public class NewsController {
                 news.setUserId(hostHolder.getUser().getId());
             } else {
                 // 匿名用户id
-                news.setUserId(99999999);
+                news.setUserId(888888888);
             }
-            newsService.addNews(news);
+
+
+            // newsService.addNews(news);
+
+            String newsString = JSON.toJSONString(news, true);
+            eventProducer.fireEvent(new EventModel(EventType.POST)
+                    .setExt("news",newsString));
+
             return StrongFriendsUtil.getJSONString(0);
         } catch (Exception e) {
             logger.error("添加新帖失败" + e.getMessage());
@@ -175,12 +182,11 @@ public class NewsController {
     @RequestMapping(path = {"/addComment"}, method = {RequestMethod.POST})
     public String addComment(@RequestParam("newsId") int newsId,
                              @RequestParam("content") String content) {
-        News news = newsService.getById(newsId);
         try {
             Comment comment = new Comment();
             comment.setUserId(hostHolder.getUser().getId());
             comment.setContent(content);
-            comment.setEntityType(EntityType.ENTITY_POST);
+            comment.setEntityType(EntityType.ENTITY_COMMENT);
             comment.setEntityId(newsId);
             comment.setCreatedDate(new Date());
             comment.setStatus(0);

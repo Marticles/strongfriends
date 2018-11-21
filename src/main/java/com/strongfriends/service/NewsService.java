@@ -19,8 +19,20 @@ public class NewsService {
     @Autowired
     private NewsDAO newsDAO;
 
+    public int getUserNewsCount(int userId) {
+        return newsDAO.getUserNewsCount(userId);
+    }
+
+    public void delNews(int newsId){
+        newsDAO.delNews(newsId);
+    }
+
     public List<News> getLatestNews(int userId, int offset, int limit) {
         return newsDAO.selectByUserIdAndOffset(userId, offset, limit);
+    }
+
+    public List<News> getAllNews(){
+        return newsDAO.getAllNews();
     }
 
     public int addNews(News news) {

@@ -51,12 +51,11 @@ public class RankController {
 
     @RequestMapping(path = {"/rank/addRank"}, method = {RequestMethod.POST})
     @ResponseBody
-    public String addMessage(HttpServletRequest request, HttpServletResponse response) {
+    public String addMessage(HttpServletRequest request) {
 
         int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId() : 0;
         String localUserName = hostHolder.getUser() != null ? hostHolder.getUser().getName() : "匿名用户";
         Rank rank = new Rank();
-        Rank tmpRank = new Rank();
 
         if (localUserName == "匿名用户") {
             rank.setId(AnonymousId);
@@ -74,7 +73,7 @@ public class RankController {
         rank.setTotal(Float.parseFloat(request.getParameter("total")));
         rank.setWilks(Float.parseFloat(request.getParameter("wilks")));
 
-        tmpRank = rankService.getById(localUserId);
+        Rank tmpRank = rankService.getById(localUserId);
         // 若排行榜中不存在该用户的数据
         if (tmpRank == null) {
             // 新增

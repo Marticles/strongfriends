@@ -39,6 +39,13 @@ public interface NewsDAO {
     @Select({"select user_id from ", TABLE_NAME, " where id=#{id}"})
     int getUserId(@Param("id") int newsId);
 
+    @Delete({"delete from ", TABLE_NAME, " where id=#{id}"})
+    int delNews(@Param("id") int newsId);
+
+    @Select({"select count(user_id) from ", TABLE_NAME, "where user_id=#{userId}"})
+    int getUserNewsCount(@Param("userId") int userId);
+
+
     //通过xml方式
     List<News> selectByUserIdAndOffset(@Param("userId") int userId, @Param("offset") int offset,
                                        @Param("limit") int limit);

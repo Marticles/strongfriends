@@ -9,15 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-public class LoginRequiredInterceptor implements HandlerInterceptor {
+public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
     private HostHolder hostHolder;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        if (hostHolder.getUser() == null) {
-            httpServletResponse.sendRedirect("/?pop=1");
+        if (hostHolder.getUser() == null||hostHolder.getUser().getId()!=99999) {
+            httpServletResponse.sendRedirect("/");
             return false;
         }
         return true;

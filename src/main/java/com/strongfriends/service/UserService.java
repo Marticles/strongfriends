@@ -105,4 +105,12 @@ public class UserService {
     public void logout(String ticket) {
         loginTicketDAO.updateStatus(ticket, 1);
     }
+
+    public List<User> getAllUsers(){
+        return userDAO.getAllUsers();
+    }
+
+    public void delUserId(int userId){
+        userDAO.deleteById(userId);
+    }
 }

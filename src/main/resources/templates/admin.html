@@ -1,0 +1,134 @@
+#parse("header.html")
+<div id="main">
+    <div class="container">
+        <h3>发帖管理</h3>
+
+        <table class="table table-bordered table-striped">
+            <thead >
+            <tr >
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">标题（点击标题查看详情）</th>
+                <th style="text-align:center;">赞数</th>
+                <th style="text-align:center;">评论数</th>
+                <th style="text-align:center;">发帖时间</th>
+                <th style="text-align:center;">用户ID</th>
+                <th style="text-align:center;">用户名</th>
+                <th style="text-align:center;"> </th>
+
+
+            </tr>
+            </thead>
+            <tbody style="text-align:center;">
+
+            #foreach($new in $news)
+            <tr>
+                <td>$!{new.id}</td>
+                <td><a href=$!{new.domain}/admin/news/$!{new.id}>$!{new.title}</a></td>
+                <td>$!{new.like_count}</td>
+                <td>$!{new.comments_count}</td>
+
+                <td>$date.format('yyyy-MM-dd hh:mm:ss', $!{new.create_date})</td>
+                <td>$!{new.user_id}</td>
+                <td>$!{new.user_name}</td>
+                <td><button type="button" class="btn btn-info" value = $!{new.id}>删除</button></td>
+
+            </tr>
+
+            #end
+
+
+
+        </table>
+
+        <h3>用户管理</h3>
+
+        <table class="table table-bordered table-striped">
+            <thead >
+            <tr >
+
+                <th style="text-align:center;">用户ID</th>
+                <th style="text-align:center;">用户名</th>
+                <th style="text-align:center;">发帖数</th>
+                <th style="text-align:center;">评论数</th>
+                <th style="text-align:center;"> </th>
+
+
+            </tr>
+            </thead>
+            <tbody style="text-align:center;">
+
+            #foreach($user in $users)
+            <tr>
+                <td>$!{user.id}</td>
+                <td>$!{user.name}</td>
+                <td>$!{user.post_count}</td>
+                <td>$!{user.comment_count}</td>
+
+                <td><button type="button" class="btn btn-primary" value = $!{user.id}>删除</button></td>
+
+            </tr>
+
+            #end
+
+
+
+        </table>
+
+
+
+    </div>
+
+
+</div>
+
+<script>
+    $(".btn-info").click(function () {
+        var news_id = this.value;
+        $.ajax({
+            url: "/admin/delnews",
+            type: "POST",
+            async: false,
+            data:{
+                "news_id":news_id,
+
+            },
+            dataType: "json",
+            success: function(data){
+                console.log(data);
+            },
+            error:function(err){
+                console.log(err.statusText);
+            }
+        });
+
+        window.location.reload()
+
+    });
+
+    $(".btn-primary").click(function () {
+        var user_id = this.value;
+        $.ajax({
+            url: "/admin/deluser",
+            type: "POST",
+            async: false,
+            data:{
+                "user_id":user_id,
+
+            },
+            dataType: "json",
+            success: function(data){
+                console.log(data);
+            },
+            error:function(err){
+                console.log(err.statusText);
+            }
+        });
+
+        window.location.reload()
+
+    });
+
+
+
+</script>
+#parse("footer.html")

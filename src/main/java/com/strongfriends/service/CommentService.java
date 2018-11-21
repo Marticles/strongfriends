@@ -8,9 +8,7 @@ import com.strongfriends.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -20,6 +18,14 @@ public class CommentService {
 
     @Autowired
     JedisAdapter jedisAdapter;
+
+    public int getUserCommentCount(int userId) {
+        return commentDAO.getUserCommentCount(userId);
+    }
+
+    public void delcomment(int commentId){
+        commentDAO.delComment(commentId);
+    }
 
     public List<Comment> getCommentsByEntity(int entityId, int entityType) {
         return commentDAO.selectByEntity(entityId, entityType);

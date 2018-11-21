@@ -2,12 +2,20 @@ package com.strongfriends.dao;
 
 import com.strongfriends.model.User;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Mapper
 public interface UserDAO {
     String TABLE_NAME = "user";
     String INSET_FIELDS = " name, password, salt, head_url ";
     String SELECT_FIELDS = " id, name, password, salt, head_url";
+
+
+    @Select({"select id, name from ", TABLE_NAME})
+    List<User> getAllUsers();
+
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
             ") values (#{name},#{password},#{salt},#{headUrl})"})
