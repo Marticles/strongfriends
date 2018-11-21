@@ -47,6 +47,7 @@ public class NewsController {
     EventProducer eventProducer;
 
 
+
     @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
     public String newsDetail(@PathVariable("newsId") int newsId, Model model) {
         News news = newsService.getById(newsId);

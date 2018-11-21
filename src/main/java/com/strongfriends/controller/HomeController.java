@@ -51,6 +51,8 @@ public class HomeController {
         return vos;
     }
 
+
+
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(HttpServletRequest request, Model model) {
         System.out.println("Session id:"+request.getSession().getId());

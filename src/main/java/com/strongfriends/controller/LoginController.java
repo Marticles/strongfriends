@@ -47,6 +47,8 @@ public class LoginController {
                     cookie.setMaxAge(3600*24*5);
                 }
                 response.addCookie(cookie);
+                // 将cookie设置成HttpOnly以防止XSS攻击
+                response.addHeader("Set-Cookie", "HttpOnly");
                 return StrongFriendsUtil.getJSONString(0, "注册成功");
             } else {
                 return StrongFriendsUtil.getJSONString(1, map);
