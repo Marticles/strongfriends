@@ -58,7 +58,7 @@ public class CommentHandler implements EventHandler {
         int status = commentService.addComment(comment);
         // 插入MySQL失败则不会失效Redis
         if(status != 0){
-            commentService.delCommentFromRedis("COMMENT:1:" + String.valueOf(comment.getId()));
+            commentService.delCommentFromRedis("COMMENT:2:" + String.valueOf(comment.getId()));
         }
 
         int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());

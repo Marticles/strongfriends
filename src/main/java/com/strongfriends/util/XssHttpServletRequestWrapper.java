@@ -1,4 +1,4 @@
-package com.strongfriends.filter;
+package com.strongfriends.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 
-public class XssAndSqlHttpServletRequestWrapper extends HttpServletRequestWrapper {
+public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     private HttpServletRequest request;
 
-    public XssAndSqlHttpServletRequestWrapper(HttpServletRequest request) {
+    public XssHttpServletRequestWrapper(HttpServletRequest request) {
         super(request);
         this.request = request;
     }

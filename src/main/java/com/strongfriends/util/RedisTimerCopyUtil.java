@@ -22,17 +22,28 @@ public class RedisTimerCopyUtil {
     @Autowired
     JedisAdapter jedisAdapter;
 
-    // 每30分钟同步一次
+    // 每30分钟同步一次赞踩
     @Scheduled(fixedRate = 1000 * 60 * 30)
-    public void timer() {
-//        List<News> newsList = new ArrayList<News>(newsDAO.getAllNews());
-//        for (News news : newsList) {
-//            int id = news.getId();
-//            int count = (int) jedisAdapter.scard("LIKE:1:" + String.valueOf(id));
-//            newsDAO.updateLikeCount(id, count);
-//        }
+    public void timerCopy() {
+        List<News> newsList = new ArrayList<News>(newsDAO.getAllNews());
+        for (News news : newsList) {
+            int id = news.getId();
+            int count = (int) jedisAdapter.scard("LIKE:1:" + String.valueOf(id));
+            newsDAO.updateLikeCount(id, count);
+        }
+    }
 
+    // 每30分钟失效一次评论
+    @Scheduled(fixedRate = 1000 * 60 * 30)
+    public void timerDel(){
+        List<News> newsList = new ArrayList<News>(newsDAO.getAllNews());
+        for (News news : newsList) {
+            int id = news.getId();
+            jedisAdapter.sdel("COMMENT:2:" + String.valueOf(id));
+        }
 
     }
+
+
 
 }
