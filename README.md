@@ -1,7 +1,7 @@
 # StrongFriends
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 ![](https://img.shields.io/badge/language-Java-orange.svg)
-![](img/index.png)
+![](img/home.png)
 ## About StrongFriends
 StrongFriends is a form which focus on the lifting. You can share information you are interested in by sending posts and communicate with others via comment or letter. We also provide RM(Repetition Maximum) and Wilks coefficient calculator. In the strength rankings you will see other user's training level.
 ## Development Environment
