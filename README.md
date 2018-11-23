@@ -29,12 +29,17 @@ I use Interceptor in login and access control. Once user have registered, servic
 I only use Redis in like/dislie and comment service.
 
 Like/Dislike:
+
 Write: Redis
+
 Read: Redis
+
 PS: Considering Like and dislike data is hot spot data, So just write it regularly into MySQL will be fine.
 
 Comment:
+
 Write: Write to MySQl and remove Redis cache behind
+
 Read: Read from Redis, if the data was cached before, return it.If not, server will retrieves the data from MySQl and add it to Redis.
 
 ### Async Module
