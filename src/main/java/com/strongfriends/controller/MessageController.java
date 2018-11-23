@@ -4,16 +4,24 @@ import com.alibaba.fastjson.JSON;
 import com.strongfriends.async.EventModel;
 import com.strongfriends.async.EventProducer;
 import com.strongfriends.async.EventType;
-import com.strongfriends.model.*;
-import com.strongfriends.service.*;
+import com.strongfriends.model.HostHolder;
+import com.strongfriends.model.Message;
+import com.strongfriends.model.User;
+import com.strongfriends.model.ViewObject;
+import com.strongfriends.service.MessageService;
+import com.strongfriends.service.UserService;
 import com.strongfriends.util.StrongFriendsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +46,7 @@ public class MessageController {
     public String conversationDetail(Model model, @RequestParam("conversationId") String conversationId) {
         try {
             List<ViewObject> messages = new ArrayList<>();
-            List<Message> conversationList = messageService.getConversationDetail(conversationId, 0, 10);
+            List<Message> conversationList = messageService.getConversationDetail(conversationId);
             for (Message msg : conversationList) {
                 ViewObject vo = new ViewObject();
                 vo.set("message", msg);
@@ -84,11 +92,14 @@ public class MessageController {
         return "letter";
     }
 
-    @RequestMapping(path = {"/msg/addMessage"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/msg/addMessage"}, method = {RequestMethod.POST})
     @ResponseBody
-    public String addMessage(@RequestParam("fromId") int fromId,
-                             @RequestParam("toId") int toId,
-                             @RequestParam("content") String content) {
+    public String addMessage(HttpServletRequest request) {
+        int fromId = hostHolder.getUser().getId();
+        User toUser = userService.getUserByName(request.getParameter("to_name"));
+        int toId = toUser.getId();
+        String content = request.getParameter("content");
+
         Message msg = new Message();
         msg.setContent(content);
         msg.setCreatedDate(new Date());
@@ -99,7 +110,7 @@ public class MessageController {
 
         // messageService.addMessage(msg);
         String msgString = JSON.toJSONString(msg, true);
-        eventProducer.fireEvent(new EventModel(EventType.MESSAGE)
+        eventProducer.produceEvent(new EventModel(EventType.MESSAGE)
                 .setEntityOwnerId(toId)
                 .setActorId(fromId)
                 .setExt("msg",msgString));

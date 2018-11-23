@@ -60,14 +60,8 @@ public class CommentHandler implements EventHandler {
         if(status != 0){
             commentService.delCommentFromRedis("COMMENT:2:" + String.valueOf(comment.getId()));
         }
-
         int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
         newsService.updateCommentCount(comment.getEntityId(), count);
-
-
-
-
-
     }
 
     @Override

@@ -28,6 +28,7 @@ public class XssFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
+        // 将HttpServletRequest强转为XssHttpServletRequestWrapper
         XssHttpServletRequestWrapper xssRequestWrapper = new XssHttpServletRequestWrapper(req);
         chain.doFilter(xssRequestWrapper, response);
     }
@@ -38,16 +39,15 @@ public class XssFilter implements Filter {
     }
 
 
+    //在启动类中创建XssObjectMapper的bean，替换Spring Boot原有的实例，用于全局JSON转换
+
     @Bean
     @Primary
     public ObjectMapper xssObjectMapper(Jackson2ObjectMapperBuilder builder) {
-        // 解析器
         ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-        // 注册xss解析器
         SimpleModule xssModule = new SimpleModule("XssStringJsonSerializer");
         xssModule.addSerializer(new XssStringJsonSerializer());
         objectMapper.registerModule(xssModule);
-        // 返回
         return objectMapper;
     }
 

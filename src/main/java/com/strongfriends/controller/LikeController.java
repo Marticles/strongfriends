@@ -48,19 +48,22 @@ public class LikeController {
         like.setEntityId(newsId);
         String likeString = JSON.toJSONString(like, true);
 
-        eventProducer.fireEvent(new EventModel(EventType.LIKE)
+        eventProducer.produceEvent(new EventModel(EventType.LIKE)
                 .setEntityOwnerId(news.getUserId())
                 .setActorId(hostHolder.getUser().getId()).setEntityId(newsId)
-                .setExt("like",likeString));
+                .setExt("like", likeString));
 
-        try{
+        try {
             Thread.sleep(100);
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        String likeMsg = String.valueOf(likeService.getLikeNum(newsId, EntityType.ENTITY_POST));
+        String disLikeMsg = String.valueOf(likeService.getDisLikeNum(newsId, EntityType.ENTITY_POST));
+        String returnJson = StrongFriendsUtil.getJSONString(0, likeMsg+"-"+disLikeMsg);
 
-        return StrongFriendsUtil.getJSONString(0, String.valueOf(likeService.getLikeNum(newsId,EntityType.ENTITY_POST)));
+        return returnJson;
     }
 
     @RequestMapping(path = {"/dislike"}, method = {RequestMethod.POST, RequestMethod.GET})
@@ -79,18 +82,20 @@ public class LikeController {
 
         News news = newsService.getById(newsId);
 
-        eventProducer.fireEvent(new EventModel(EventType.DISLIKE)
+        eventProducer.produceEvent(new EventModel(EventType.DISLIKE)
                 .setEntityOwnerId(news.getUserId())
                 .setActorId(hostHolder.getUser().getId()).setEntityId(newsId)
-                .setExt("dislike",likeString));
+                .setExt("dislike", likeString));
 
-        try{
+        try {
             Thread.sleep(100);
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        String likeMsg = String.valueOf(likeService.getLikeNum(newsId, EntityType.ENTITY_POST));
+        String disLikeMsg = String.valueOf(likeService.getDisLikeNum(newsId, EntityType.ENTITY_POST));
+        String returnJson = StrongFriendsUtil.getJSONString(0, likeMsg+"-"+disLikeMsg);
 
-
-        return StrongFriendsUtil.getJSONString(0, String.valueOf(likeService.getDisLikeNum(newsId,EntityType.ENTITY_POST)));
+        return returnJson;
     }
 }

@@ -38,9 +38,12 @@ public class HomeController {
         int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId() : 0;
         List<ViewObject> vos = new ArrayList<>();
         for (News news : newsList) {
+            news.setLikeCount((int) likeService.getLikeNum(news.getId(),EntityType.ENTITY_POST));
+            news.setDisLikeCount((int) likeService.getDisLikeNum(news.getId(),EntityType.ENTITY_POST));
             ViewObject vo = new ViewObject();
             vo.set("news", news);
             vo.set("user", userService.getUser(news.getUserId()));
+
             if (localUserId != 0) {
                 vo.set("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_POST, news.getId()));
             } else {
@@ -55,7 +58,6 @@ public class HomeController {
 
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(HttpServletRequest request, Model model) {
-        System.out.println("Session id:"+request.getSession().getId());
         model.addAttribute("vos", getNews(0, 0, 10));
         return "home";
     }

@@ -20,7 +20,7 @@ public class LikeService {
         return jedisAdapter.sismember(disLikeKey, String.valueOf(userId)) ? -1 : 0;
     }
 
-    public long like(int userId, int entityType, int entityId) {
+    public long[] like(int userId, int entityType, int entityId) {
         // 在喜欢集合里增加
         String likeKey = RedisKeyUtil.getLikeKey(entityId, entityType);
 
@@ -30,17 +30,24 @@ public class LikeService {
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityId, entityType);
         jedisAdapter.srem(disLikeKey, String.valueOf(userId));
 
-        return jedisAdapter.scard(likeKey);
+        long[] arr = new long[2];
+        arr[0] = jedisAdapter.scard(likeKey);
+        arr[1] = jedisAdapter.scard(disLikeKey);
+
+        return arr;
     }
 
-    public long disLike(int userId, int entityType, int entityId) {
+    public long[] disLike(int userId, int entityType, int entityId) {
         // 在反对集合里增加
         String disLikeKey = RedisKeyUtil.getDisLikeKey(entityId, entityType);
         jedisAdapter.sadd(disLikeKey, String.valueOf(userId));
         // 从喜欢里删除
         String likeKey = RedisKeyUtil.getLikeKey(entityId, entityType);
         jedisAdapter.srem(likeKey, String.valueOf(userId));
-        return jedisAdapter.scard(likeKey);
+        long[] arr = new long[2];
+        arr[0] = jedisAdapter.scard(likeKey);
+        arr[1] = jedisAdapter.scard(disLikeKey);
+        return arr;
     }
 
     public long getLikeNum(int entityId,int entityType){
@@ -50,8 +57,8 @@ public class LikeService {
     }
 
     public long getDisLikeNum(int entityId,int entityType){
-        String likeKey = RedisKeyUtil.getDisLikeKey(entityId, entityType);
-        return jedisAdapter.scard(likeKey);
+        String disLikeKey = RedisKeyUtil.getDisLikeKey(entityId, entityType);
+        return jedisAdapter.scard(disLikeKey);
 
     }
 }

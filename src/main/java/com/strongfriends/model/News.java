@@ -13,6 +13,16 @@ public class News {
 
     private int likeCount;
 
+    public int getDisLikeCount() {
+        return disLikeCount;
+    }
+
+    public void setDisLikeCount(int disLikeCount) {
+        this.disLikeCount = disLikeCount;
+    }
+
+    private int disLikeCount;
+
     private int commentCount;
 
     private Date createdDate;

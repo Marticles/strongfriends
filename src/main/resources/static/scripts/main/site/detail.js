@@ -23,14 +23,14 @@
     }
     function fClickShare() {
         var that = this;
-            PopupUpload.show({
-                listeners: {
-                    done: function () {
-                        //alert('login');
-                        window.location.reload();
-                    }
+        PopupUpload.show({
+            listeners: {
+                done: function () {
+                    //alert('login');
+                    window.location.reload();
                 }
-            });
+            }
+        });
     }
     function fClickLogin() {
         var that = this;
@@ -60,9 +60,16 @@
         ActionUtil.like({
             newsId: sId,
             call: function (oResult) {
-                oEl.find('span.count').html(oResult.msg);
+                var uni_msg = oResult.msg;
+                var arr = uni_msg.split("-");
+                var like_info = arr[0];
+                var dislike_info = arr[1];
+                oEl.parent().find('span.dis_count').html(dislike_info);
+                oEl.parent().find('span.count').html(like_info);
+
                 oEl.addClass('pressed');
                 oEl.parent().find('.click-dislike').removeClass('pressed');
+
             },
             error: function () {
                 alert('出现错误，请重试');
@@ -88,7 +95,15 @@
                 oEl.addClass('pressed');
                 var oLikeBtn = oEl.parent().find('.click-like');
                 oLikeBtn.removeClass('pressed');
-                oLikeBtn.find('span.count').html(oResult.msg);
+
+                var uni_msg = oResult.msg;
+                var arr = uni_msg.split("-");
+                var like_info = arr[0];
+                var dislike_info = arr[1];
+                oEl.parent().find('span.dis_count').html(dislike_info);
+                oEl.parent().find('span.count').html(like_info);
+
+
             },
             error: function () {
                 alert('出现错误，请重试');

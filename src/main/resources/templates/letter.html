@@ -1,6 +1,8 @@
 #parse("header.html")
     <div id="main">
         <div class="container">
+
+
             <ul class="letter-list">
                 #foreach($conversation in $conversations)
                 <li id="conversation-item-10005_622873">
@@ -40,7 +42,58 @@
                 #end
             </ul>
 
+            <div style="margin-top:10px;margin-bottom:10px;">
+
+            <form role="form">
+                <div class="form-group">
+                    <label >输入私信内容</label>
+                    <textarea class="form-control" rows="4" id="msg"></textarea>
+                </div>
+
+                </form>
+            </div>
+
+            <div style="text-align:center;margin-top:15px;margin-bottom:15px;">
+                <form class="form-inline" role="form">
+                <input type="text" class="form-control" id="to_name" placeholder="请输入对方用户名称">
+
+                <button type="button" class="btn btn-info" style="margin-left:20px;">确认发送</button>
+                </form>
+            </div>
+
+
         </div>
+
+
        
     </div>
+
+<script>
+    $(".btn").click(function () {
+        var msg = $('#msg').val()
+        var to_name = $('#to_name').val()
+        $.ajax({
+            url: "/msg/addMessage",
+            type: "POST",
+            async: true,
+            data:{
+                "content":msg,
+                "to_name":to_name,
+            },
+            dataType: "json",
+            success: function(data){
+                window.location.reload();
+                console.log(data);
+            },
+            error:function(err){
+                console.log(err.statusText);
+            }
+        });
+
+    })
+
+
+
+</script>
+
 #parse("footer.html")

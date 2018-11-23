@@ -50,8 +50,9 @@ public class CommentService {
         String CommentKey = RedisKeyUtil.getCommentKey(comment.getEntityId(), comment.getEntityType());
         String commentString = JSON.toJSONString(comment, true);
         jedisAdapter.sadd(CommentKey, commentString);
-        // 默认评论有效时间为30分钟
-        jedisAdapter.expire(CommentKey,60*30);
+        int rndSeconds = (int)(1+Math.random()*(120-30+1));
+        // 设置随机失效时间(半小时至2小时)
+        jedisAdapter.expire(CommentKey,rndSeconds*30);
 
     }
 

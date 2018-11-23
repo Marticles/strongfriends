@@ -23,7 +23,7 @@ public class NewsService {
         return newsDAO.getUserNewsCount(userId);
     }
 
-    public void delNews(int newsId){
+    public void delNews(int newsId) {
         newsDAO.delNews(newsId);
     }
 
@@ -31,7 +31,7 @@ public class NewsService {
         return newsDAO.selectByUserIdAndOffset(userId, offset, limit);
     }
 
-    public List<News> getAllNews(){
+    public List<News> getAllNews() {
         return newsDAO.getAllNews();
     }
 
@@ -69,7 +69,7 @@ public class NewsService {
         return newsDAO.updateLikeCount(id, count);
     }
 
-    public int getUserId(int newsId){
-        return newsDAO.getUserId(newsId);
-    }
+    public int updateDisLikeCount(int id, int count) { return newsDAO.updateDisLikeCount(id, count); }
+
+    public int getUserId(int newsId) { return newsDAO.getUserId(newsId); }
 }

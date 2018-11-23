@@ -33,8 +33,10 @@ public class DisLikeHandler implements EventHandler {
     @Override
     public void doHandle(EventModel model) {
         Like like = JSON.parseObject(model.getExt("dislike"), Like.class);
-        long likeCount = likeService.disLike(like.getUserId(), like.getEntityType(), like.getEntityId());
-        newsService.updateLikeCount(like.getEntityId(), (int) likeCount);
+        long[] arr = likeService.disLike(like.getUserId(), like.getEntityType(), like.getEntityId());
+        newsService.updateLikeCount(like.getEntityId(), (int) arr[1]);
+        newsService.updateDisLikeCount(like.getEntityId(), (int) arr[0]);
+
     }
 
     @Override

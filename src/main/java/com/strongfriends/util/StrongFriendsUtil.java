@@ -1,16 +1,13 @@
 package com.strongfriends.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.strongfriends.model.Comment;
-import com.strongfriends.model.ViewObject;
 import com.strongfriends.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.security.MessageDigest;
-import java.util.*;
+import java.util.Map;
 
 public class StrongFriendsUtil {
 
@@ -20,7 +17,7 @@ public class StrongFriendsUtil {
     private static final Logger logger = LoggerFactory.getLogger(StrongFriendsUtil.class);
 
     public static String STRONGFRIENDS_DOMAIN = "http://localhost:8080";
-    public static String IMAGE_DIR="D:/upload/";
+    public static String IMAGE_DIR="D:/upload";
     public static String[] IMAGE_FILE_EXT = new String[] {"png","jpg","jpeg","bmp","gif"};
 
     public static boolean isFileAllowed(String fileExt){

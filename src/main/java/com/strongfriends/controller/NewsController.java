@@ -85,7 +85,6 @@ public class NewsController {
             // 如果不一致(读MySQL返回，再把Mysql数据写入Redis缓存)
 
             }else{
-                System.out.println("Redis与MYSQL不一致");
                 synchronized (this) {
 
                     // 读MySQL数据
@@ -109,11 +108,10 @@ public class NewsController {
 
             }
 
-
-
             model.addAttribute("comments", commentVOs);
         }
-
+        news.setLikeCount((int) likeService.getLikeNum(news.getId(),EntityType.ENTITY_POST));
+        news.setDisLikeCount((int) likeService.getDisLikeNum(news.getId(),EntityType.ENTITY_POST));
         model.addAttribute("news", news);
         model.addAttribute("owner", userService.getUser(news.getUserId()));
 
@@ -170,7 +168,7 @@ public class NewsController {
             // newsService.addNews(news);
 
             String newsString = JSON.toJSONString(news, true);
-            eventProducer.fireEvent(new EventModel(EventType.POST)
+            eventProducer.produceEvent(new EventModel(EventType.POST)
                     .setExt("news",newsString));
 
             return StrongFriendsUtil.getJSONString(0);
@@ -195,17 +193,11 @@ public class NewsController {
 
             String commentJson = JSON.toJSONString(comment, true);
 
-
-            eventProducer.fireEvent(new EventModel(EventType.COMMENT)
+            eventProducer.produceEvent(new EventModel(EventType.COMMENT)
                     .setActorId(hostHolder.getUser().getId())
                     .setEntityId(comment.getEntityId())
                     .setEntityOwnerId(newsService.getUserId(newsId))
                     .setExt("msg",commentJson));
-
-
-
-
-
 
         } catch (Exception e) {
             logger.error("提交评论错误" + e.getMessage());

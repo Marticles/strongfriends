@@ -28,8 +28,10 @@ public class RedisTimerCopyUtil {
         List<News> newsList = new ArrayList<News>(newsDAO.getAllNews());
         for (News news : newsList) {
             int id = news.getId();
-            int count = (int) jedisAdapter.scard("LIKE:1:" + String.valueOf(id));
-            newsDAO.updateLikeCount(id, count);
+            int likeCount = (int) jedisAdapter.scard("LIKE:1:" + String.valueOf(id));
+            int dislikeCount = (int) jedisAdapter.scard("DISLIKE:1:" + String.valueOf(id));
+            newsDAO.updateLikeCount(id, likeCount);
+            newsDAO.updateDisLikeCount(id, dislikeCount);
         }
     }
 

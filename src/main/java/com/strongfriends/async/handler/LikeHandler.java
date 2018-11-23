@@ -34,12 +34,8 @@ public class LikeHandler implements EventHandler {
 
     @Override
     public void doHandle(EventModel model) {
-        // System.out.print("赞+1");
-
-
         News news = newsService.getById(model.getEntityId());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         Message message = new Message();
         // 99999为Admin账号
         message.setFromId(99999);
@@ -52,13 +48,11 @@ public class LikeHandler implements EventHandler {
                 String.format("%d_%d", message.getToId(), 99999));
         message.setCreatedDate(new Date());
         messageService.addMessage(message);
-
         Like like = JSON.parseObject(model.getExt("like"), Like.class);
-        long likeCount = likeService.like(like.getUserId(), like.getEntityType(), like.getEntityId());
-        newsService.updateLikeCount(like.getEntityId(), (int) likeCount);
 
-
-
+        long[] arr = likeService.like(like.getUserId(), like.getEntityType(), like.getEntityId());
+        newsService.updateLikeCount(like.getEntityId(), (int) arr[0]);
+        newsService.updateDisLikeCount(like.getEntityId(), (int) arr[1]);
     }
 
     @Override
