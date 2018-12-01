@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogAspect {
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
-
     // @Before("execution(* com.strongfriends.controller.*Controller.*(..))")
     @Before("execution(* com.strongfriends.controller.HomeController.*(..))")
     public void beforeMethod(JoinPoint joinPoint){
