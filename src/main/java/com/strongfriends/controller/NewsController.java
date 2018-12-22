@@ -125,7 +125,7 @@ public class NewsController {
         try {
             response.setContentType("image");
             StreamUtils.copy(new FileInputStream(new
-                    File(StrongFriendsUtil.IMAGE_DIR + imageName)), response.getOutputStream());
+                    File(StrongFriendsUtil.IMAGE_DIR +"/"+ imageName)), response.getOutputStream());
         } catch (Exception e) {
             logger.error("读取图片错误" + imageName + e.getMessage());
         }

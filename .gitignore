@@ -4,6 +4,9 @@
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
+__pycache__
+secure.py
+
 
 ### STS ###
 .apt_generated

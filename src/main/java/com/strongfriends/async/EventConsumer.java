@@ -64,6 +64,7 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
         ThreadPool threadPool = new ThreadPool();
 
         Runnable task = new Runnable() {
+            @Override
             public void run() {
                 while (true) {
                     String key = RedisKeyUtil.getEventQueueKey();

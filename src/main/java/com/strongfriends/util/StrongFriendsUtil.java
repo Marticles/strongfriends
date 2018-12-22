@@ -16,8 +16,11 @@ public class StrongFriendsUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(StrongFriendsUtil.class);
 
-    public static String STRONGFRIENDS_DOMAIN = "http://localhost:8080";
-    public static String IMAGE_DIR="D:/upload";
+    public static String STRONGFRIENDS_DOMAIN = "http://localhost:8088";
+    public static String IMAGE_DIR="D:/upload/img";
+    public static String VIDEO_DIR="D:/upload/video";
+    public static String TRACKER_IMAGE_DIR="D:/upload/track/img";
+    public static String TRACKER_VIDEO_DIR="D:/upload/track/video";
     public static String[] IMAGE_FILE_EXT = new String[] {"png","jpg","jpeg","bmp","gif"};
 
     public static boolean isFileAllowed(String fileExt){

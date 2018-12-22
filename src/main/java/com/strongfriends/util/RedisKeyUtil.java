@@ -6,10 +6,15 @@ public class RedisKeyUtil {
     private static String BIZ_DISLIKE = "DISLIKE";
     private static String BIZ_EVENT = "EVENT";
     private static String BIZ_COMMENT = "COMMENT";
+    private static String BIZ_TRACK = "TRACK_TASK";
 
 
     public static String getEventQueueKey() {
         return BIZ_EVENT;
+    }
+
+    public static String getTrackTaskKey(){
+        return BIZ_TRACK;
     }
 
     public static String getLikeKey(int entityId, int entityType) {

@@ -1,0 +1,142 @@
+#parse("header.html")
+
+<div id="main">
+    <div class="container">
+        <h3>杠铃轨迹追踪</h3>
+        <input id="lefile" type="file" style="display:none">
+        <div class="upload">
+            <form method="post" action="/barpath" enctype="multipart/form-data">
+                <label for="file" class=" btn btn-default">选择视频</label>
+                <input id="file" type="file" name="file" style="display:none">
+                <span id="chosen_file"> $!{upload_status}</span>&nbsp;&nbsp;&nbsp;
+                <input type="submit" class="btn btn-info" value="确认上传">
+            </form>
+        </div>
+        <img src="$!{img_url}" id="target" style="width: auto;height: auto;max-width: 100%;max-height: 100%; ">
+        <div >
+            <br>
+            <span id="file_name" style="display:none">$!{file_name}</span>
+            <button id="track" type="button" class="btn btn-info" style="display:none">确认杠铃位置</button>
+        </div>
+        <br>
+        <h3>历史上传</h3>
+        <table id="tb" class="table table-bordered table-striped">
+            <thead >
+            <tr >
+                <th style="text-align:center;">#</th>
+                <th style="text-align:center;">创建时间</th>
+                <th style="text-align:center;">上传视频名</th>
+                <th style="text-align:center;">上传视频预览</th>
+                <th style="text-align:center;">完成状态</th>
+                <th style="text-align:center;">轨迹视频预览</th>
+                <th style="text-align:center;">下载轨迹视频</th>
+
+            </tr>
+            </thead>
+            <tbody style="text-align:center;">
+            #set($num=1)
+            #foreach($tracker in $trackers)
+            <tr>
+                <td style="vertical-align:middle">${num}</td>
+                <td style="vertical-align:middle">$date.format('yyyy-MM-dd HH:mm:ss', $tracker.created_date)</td>
+                <td style="vertical-align:middle">$!{tracker.origin_video_name}</td>
+                <td style="vertical-align:middle"><img src="http://localhost:8088/image?name=$!{tracker.origin_img_name}" style="height: 70px;width: 70px;">
+
+                </td>
+                #if($!{tracker.status} == 0)
+                <td style="vertical-align:middle">未完成</td>
+                <td style="vertical-align:middle">无预览视频</td>
+                <td style="vertical-align:middle">无法下载</td>
+                #else
+                <td style="vertical-align:middle">已完成</td>
+                <td style="vertical-align:middle">
+                    <img src="http://localhost:8088/trackerimg?name=$!{tracker.origin_img_name}" style="height: 70px;width: 70px;">
+
+                </td>
+                <td style="vertical-align:middle"><button id ="tracker_download_$!{tracker.tracker_video_name}" type="button" class="btn btn-primary btn-small" value = $!{tracker.tracker_video_name}>下载</button></td>
+                #end
+
+            </tr>
+            #set($num=1+$num)
+            #end
+
+        </table>
+    </div>
+
+
+
+</div>
+
+<link rel="stylesheet" type="text/css" href="/styles/rcrop.css">
+<script type="text/javascript" src="/scripts/rcrop.min.js"></script>
+
+<script type="text/javascript">
+    $('input[id=file]').change(function () {
+        $('#chosen_file').html($(this).val());
+    });
+    if ($('#chosen_file').text() == " 上传视频成功，请框选杠铃位置") {
+
+        $('#target').rcrop();
+        $("#track").css('display','block');
+    }
+
+
+    $("#track").click(function () {
+        var track_info =$('#target').rcrop('getValues');
+        var file_name = $('#file_name').text();
+        var img = document.getElementsByTagName('img')[0];
+        var video_height = img.naturalHeight;
+        var video_width = img.naturalWidth;
+        $.ajax({
+            url: "/addtracktask",
+            type: "POST",
+            async: true,
+            data:{
+                "file_name":file_name,
+                "video_height":video_height,
+                "video_width":video_width,
+                "start_x":track_info.x,
+                "start_y":track_info.y,
+                "select_height":track_info.height,
+                "select_width":track_info.width,
+            },
+            dataType: "json",
+            success: function(data){
+                window.location.href="/barpath";
+                alert("任务已提交！")
+                console.log(data);
+            },
+            error:function(err){
+                console.log(err.statusText);
+            }
+        });
+
+        $.ajax({
+            url: "http://127.0.0.1:9999/start_task",
+            type: "GET",
+            async: true,
+            data:{
+            },
+            dataType: "json",
+            success: function(data){
+
+                console.log(data);
+            },
+            error:function(err){
+                console.log(err.statusText);
+            }
+        });
+    });
+
+    $("#tb").on('click', "button[id^='tracker_download']", function () {
+        track_filename=this.value;
+
+        $(location).attr('href', '/trackerfile?name='+track_filename);
+
+    });
+
+
+
+</script>
+
+#parse("footer.html")

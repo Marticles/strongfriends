@@ -27,6 +27,12 @@ public class XssFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String url = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+        System.out.println(url);
+        if (url=="/trackerfile") {
+            return;
+        }
         HttpServletRequest req = (HttpServletRequest) request;
         // 将HttpServletRequest强转为XssHttpServletRequestWrapper
         XssHttpServletRequestWrapper xssRequestWrapper = new XssHttpServletRequestWrapper(req);
