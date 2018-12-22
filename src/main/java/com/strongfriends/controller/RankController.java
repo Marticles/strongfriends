@@ -1,5 +1,6 @@
 package com.strongfriends.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.strongfriends.model.EntityType;
 import com.strongfriends.model.HostHolder;
 import com.strongfriends.model.Rank;
@@ -29,7 +30,7 @@ public class RankController {
 
     @RequestMapping(path = {"/rank"}, method = {RequestMethod.GET})
     public String rank(Model model) {
-        List<Rank> ranks = rankService.getAllRank();
+        List<Rank> ranks = rankService.getAllRankByRedis();
         List<ViewObject> rankVOs = new ArrayList<ViewObject>();
         for (Rank rank : ranks) {
             ViewObject vo = new ViewObject();
@@ -78,13 +79,24 @@ public class RankController {
         if (tmpRank == null) {
             // 新增
             rankService.addRank(rank);
+            rankService.addRankByRedis(rank);
+
             return StrongFriendsUtil.getJSONString(rank.getId());
         } else {
             // 存在则修改
+            rankService.delRankByRedis(tmpRank);
+            rankService.addRankByRedis(rank);
             rankService.updateRank(rank);
             return StrongFriendsUtil.getJSONString(rank.getId());
         }
 
+    }
+
+    @RequestMapping(path = {"/test"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public String test(){
+        rankService.getAllRankByRedis();
+        return "TEST";
     }
 
 

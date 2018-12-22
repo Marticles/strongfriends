@@ -29,7 +29,6 @@ public class XssFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String url = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
-        System.out.println(url);
         if (url=="/trackerfile") {
             return;
         }

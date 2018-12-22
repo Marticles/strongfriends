@@ -63,11 +63,11 @@ public class JedisAdapter implements InitializingBean {
         }
     }
 
-    public void expire(String key,int seconds){
+    public void expire(String key, int seconds) {
         Jedis jedis = null;
         try {
             jedis = pool.getResource();
-            jedis.expire(key,seconds);
+            jedis.expire(key, seconds);
         } catch (Exception e) {
             logger.error("发生异常" + e.getMessage());
         } finally {
@@ -108,7 +108,6 @@ public class JedisAdapter implements InitializingBean {
             }
         }
     }
-
 
 
     public long srem(String key, String value) {
@@ -215,6 +214,50 @@ public class JedisAdapter implements InitializingBean {
             }
         }
     }
+
+    public void zadd(String key, double score, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            jedis.zadd(key, score, value);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+    public Set<String> zrevrange(String key, long start, long end) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.zrevrange(key, start, end);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+            return null;
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+    public void zremove(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            jedis.zrem(key,value);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
 
     public void setObject(String key, Object obj) {
         set(key, JSON.toJSONString(obj));

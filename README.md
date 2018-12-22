@@ -79,7 +79,11 @@ StrongFriends，又称壮壮朋友(๑•̀ㅂ•́)و✧，是一个基于 Spri
 
 - 读：先读 Redis，若命中直接返回 Redis 数据；若没命中，读 MySQL 数据返回并写入 Redis 缓存。
 
-### 杠铃轨迹识别
+### 力量排行榜
+
+基于 Redis 中的 zset 实现，根据 Wilks 系数进行排序。
+
+## 杠铃轨迹识别
 
 基于 Flask 搭建杠铃轨迹的识别服务，具体实现基于 OpenCV 与 Dlib。
 
