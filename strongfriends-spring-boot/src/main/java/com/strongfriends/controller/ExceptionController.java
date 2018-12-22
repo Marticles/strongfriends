@@ -19,7 +19,6 @@ public class ExceptionController {
         map.put("msg",e.getMessage());
         map.put("url",request.getRequestURL());
         return map;
-
     }
 
 }
